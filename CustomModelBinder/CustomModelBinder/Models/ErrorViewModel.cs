@@ -1,5 +1,3 @@
-using System;
-
 namespace CustomModelBinder.Models
 {
     public class ErrorViewModel

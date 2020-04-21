@@ -1,4 +1,3 @@
-using CustomModelBinder.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,10 +17,7 @@ namespace CustomModelBinder
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews(opts =>
-            {
-                opts.ModelBinderProviders.Insert(0, new CustomPointModelBinderProvider());
-            });
+            services.AddControllersWithViews(); 
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -47,6 +43,13 @@ namespace CustomModelBinder
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Point}/{action=Create}/{id?}");
             });
         }
     }

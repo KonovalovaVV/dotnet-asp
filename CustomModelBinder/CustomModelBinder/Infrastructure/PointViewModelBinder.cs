@@ -5,15 +5,8 @@ using System.Threading.Tasks;
 
 namespace CustomModelBinder.Infrastructure
 {
-    public class CustomPointBinder : IModelBinder
+    public class PointViewModelBinder : IModelBinder
     {
-        private readonly IModelBinder fallbackBinder;
-
-        public CustomPointBinder(IModelBinder fallbackBinder)
-        {
-            this.fallbackBinder = fallbackBinder;
-        }
-
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             if (bindingContext == null)
@@ -21,11 +14,12 @@ namespace CustomModelBinder.Infrastructure
                 throw new ArgumentNullException(nameof(bindingContext));
             }
             var coordValues = bindingContext.ValueProvider.GetValue("Coordinates");
+            bindingContext.ModelState.SetModelValue(bindingContext.ModelName, coordValues);
             if (coordValues == ValueProviderResult.None)
             {
-                return fallbackBinder.BindModelAsync(bindingContext);
+                return Task.CompletedTask;
             }
-            bindingContext.Result = ModelBindingResult.Success(Point.Parse(coordValues.FirstValue));
+            bindingContext.Result = ModelBindingResult.Success(PointViewModel.Parse(coordValues.FirstValue));
             return Task.CompletedTask;
         }
     }

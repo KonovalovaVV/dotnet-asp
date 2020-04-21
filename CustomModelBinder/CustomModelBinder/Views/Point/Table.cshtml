@@ -1,0 +1,18 @@
+﻿@model IEnumerable<PointViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h3><a href="Create">Create point</a></h3><br/>
+
+<table width="100%" border="1" cellpadding="4" cellspacing="0">
+    <tr>
+        <th>x</th>
+        <th>y</th>
+        <th>z</th>
+    </tr>
+    @foreach (var pointInfo in Model)
+    {
+        <tr><td>@pointInfo.X</td><td>@pointInfo.Y</td><td>@pointInfo.Z</td></tr>
+    }
+</table>
