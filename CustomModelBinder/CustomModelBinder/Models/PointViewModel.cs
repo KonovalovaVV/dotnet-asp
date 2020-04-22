@@ -39,7 +39,7 @@ namespace CustomModelBinder.Models
 
             return input
                 .Split(',')
-                .Select(part => int.TryParse(part, out int IntValue) ? IntValue : (int?)null)
+                .Select(part => int.TryParse(part, out int intValue) ? intValue : (int?)null)
                 .Where(intValue => intValue.HasValue)
                 .Select(intValue => intValue.Value)
                 .ToArray();

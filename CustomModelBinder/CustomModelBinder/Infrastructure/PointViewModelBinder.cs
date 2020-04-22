@@ -13,13 +13,16 @@ namespace CustomModelBinder.Infrastructure
             {
                 throw new ArgumentNullException(nameof(bindingContext));
             }
-            var coordValues = bindingContext.ValueProvider.GetValue("Coordinates");
-            bindingContext.ModelState.SetModelValue(bindingContext.ModelName, coordValues);
-            if (coordValues == ValueProviderResult.None)
+
+            ValueProviderResult coordinateValues = bindingContext.ValueProvider.GetValue("Coordinates");
+           
+            if (coordinateValues == ValueProviderResult.None)
             {
                 return Task.CompletedTask;
             }
-            bindingContext.Result = ModelBindingResult.Success(PointViewModel.Parse(coordValues.FirstValue));
+
+            bindingContext.Result = ModelBindingResult.Success(PointViewModel.Parse(coordinateValues.FirstValue));
+           
             return Task.CompletedTask;
         }
     }
