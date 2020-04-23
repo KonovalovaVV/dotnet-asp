@@ -1,34 +1,16 @@
-﻿using CustomModelBinder.Models;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using CustomModelBinder.Models;
 
 namespace CustomModelBinder.Controllers
 {
-    public class PersonController: Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class PersonController: ControllerBase
     {
-        private static List<PersonViewModel> people = new List<PersonViewModel>();
-
-        public static PersonViewModel Get(Guid id)
+        [HttpGet("{id}")]
+        public IActionResult Get(PersonViewModel person)
         {
-            foreach(var person in people)
-            {
-                if(person.Id == id)
-                {
-                    return person;
-                }
-            }
-
-            PersonViewModel personViewModel = new PersonViewModel
-            {
-                Id = id,
-                FirstName = "Bob",
-                LastName = "Smith",
-                Age = 35
-            };
-            people.Add(personViewModel);
-
-            return personViewModel;
+            return new JsonResult(person);
         }
     }
 }

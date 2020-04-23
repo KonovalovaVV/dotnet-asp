@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Threading.Tasks;
 
-namespace CustomModelBinder.Infrastructure
+namespace CustomModelBinder.Binders
 {
     public class PointViewModelBinder : IModelBinder
     {

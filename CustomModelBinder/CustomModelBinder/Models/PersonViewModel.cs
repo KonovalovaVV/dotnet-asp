@@ -1,11 +1,10 @@
-﻿using CustomModelBinder.Infrastructure;
+﻿using CustomModelBinder.Binders;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace CustomModelBinder.Models
 {
     [ModelBinder(typeof(PersonViewModelBinder))]
-
     public class PersonViewModel
     {
         public Guid Id { get; set; }
