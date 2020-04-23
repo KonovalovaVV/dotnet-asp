@@ -16,9 +16,9 @@ namespace CustomModelBinder.Binders
                 throw new ArgumentNullException(nameof(bindingContext));
             }
 
-            if (GuidConverter
-                .TryConvertBase64ToGuid((string)bindingContext.HttpContext
-                .GetRouteValue("id"), out Guid id))
+            var base64Id = (string)bindingContext.HttpContext.GetRouteValue("id");
+
+            if (GuidConverter.TryConvertBase64ToGuid(base64Id, out Guid id))
             {
                 bindingContext.Result = ModelBindingResult.Success(new PersonViewModel
                 {
