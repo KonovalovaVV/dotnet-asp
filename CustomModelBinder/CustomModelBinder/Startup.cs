@@ -33,7 +33,7 @@ namespace CustomModelBinder
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+                
             app.UseRouting();
 
             app.UseAuthorization();
@@ -42,16 +42,8 @@ namespace CustomModelBinder
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Point}/{action=Create}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}");
             });
         }
     }
-
 }

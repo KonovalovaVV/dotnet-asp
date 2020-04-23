@@ -1,4 +1,4 @@
-﻿using CustomModelBinder.Infrastructure;
+﻿using CustomModelBinder.Binders;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
