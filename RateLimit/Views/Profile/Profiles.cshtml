@@ -1,17 +1,15 @@
-﻿@model PagedList.IPagedList<ProfileViewModel>
-@using PagedList.Mvc;
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-@{
-    ViewData["Title"] = "Profiles";
-}
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
-@using (Html.BeginForm())
-{
+<form asp-controller="Profile" asp-action="Profiles">
     <p>
-        Find by name: @Html.TextBox("SearchString")
-        <input type="submit" value="Search" />
+        Title: <input type="text" name="SearchString">
+        <input type="submit" value="Filter" />
     </p>
-}
+</form>
+
+<h2>Profiles</h2>
 
 <table width="100%" border="1" cellpadding="4" cellspacing="0">
     <tr>
@@ -20,16 +18,15 @@
         <th>Birthday</th>
         <th>Id</th>
     </tr>
-    @foreach (var profileInfo in Model)
+    @foreach (var profileInfo in ViewBag.OnePageOfProducts)
     {
         <tr>
-            <td>@Html.DisplayFor(modelItem => profileInfo.FirstName)</td>
-            <td>@Html.DisplayFor(modelItem => profileInfo.LastName)</td>
-            <td>@Html.DisplayFor(modelItem => profileInfo.Birthday)</td>
-            <td>@Html.DisplayFor(modelItem => profileInfo.Id)</td>
+            <td>@profileInfo.FirstName</td>
+            <td>@profileInfo.LastName</td>
+            <td>@profileInfo.Birthday</td>
+            <td>@profileInfo.Id</td>
         </tr>
     }
 </table>
-<br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
 
+@Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Profiles", new { page }))
