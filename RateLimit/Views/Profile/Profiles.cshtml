@@ -1,0 +1,35 @@
+﻿@model PagedList.IPagedList<ProfileViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewData["Title"] = "Profiles";
+}
+
+@using (Html.BeginForm())
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<table width="100%" border="1" cellpadding="4" cellspacing="0">
+    <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Birthday</th>
+        <th>Id</th>
+    </tr>
+    @foreach (var profileInfo in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => profileInfo.FirstName)</td>
+            <td>@Html.DisplayFor(modelItem => profileInfo.LastName)</td>
+            <td>@Html.DisplayFor(modelItem => profileInfo.Birthday)</td>
+            <td>@Html.DisplayFor(modelItem => profileInfo.Id)</td>
+        </tr>
+    }
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+
