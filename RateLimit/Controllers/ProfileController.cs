@@ -7,6 +7,8 @@ namespace RateLimit.Controllers
 {
     public class ProfileController: Controller
     {
+
+        [RateLimit(Seconds = 5)]
         public IActionResult Profiles(int page = 1, int pageSize = 3, string searchString = "")
         {
             var profiles = ProfileService.GetProfiles("FirstName", searchString);

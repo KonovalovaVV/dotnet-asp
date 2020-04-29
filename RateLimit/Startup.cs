@@ -21,6 +21,7 @@ namespace RateLimit
         {
             services.AddControllersWithViews();
             services.AddSingleton<ProfileService>();
+            services.AddMemoryCache();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
