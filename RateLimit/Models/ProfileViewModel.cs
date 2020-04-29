@@ -8,6 +8,5 @@ namespace RateLimit.Models
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public DateTime Birthday { get; set; }
-
     }
 }

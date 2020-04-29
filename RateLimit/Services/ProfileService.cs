@@ -8,30 +8,30 @@ namespace RateLimit.Services
 {
     public class ProfileService
     {
-        public static IQueryable<ProfileViewModel> GetProfiles(string sortField, int? page, string searchString)
+        public static IEnumerable<ProfileViewModel> GetProfiles(string sortField, string searchString)
         {
             var profiles = ReadProfiles();
 
             if (!string.IsNullOrEmpty(searchString))
             {
                 profiles = profiles.Where(s => s.LastName.Contains(searchString)
-                                       || s.FirstName.Contains(searchString)).ToList();
+                                       || s.FirstName.Contains(searchString));
             }
 
             profiles = sortField switch
             {
-                "Birthday" => profiles.OrderBy(s => s.Birthday).ToList(),
-                "LastName" => profiles.OrderBy(s => s.LastName).ToList(),
-                "FirstName" => profiles.OrderBy(s => s.FirstName).ToList(),
+                "Birthday" => profiles.OrderBy(s => s.Birthday),
+                "LastName" => profiles.OrderBy(s => s.LastName),
+                "FirstName" => profiles.OrderBy(s => s.FirstName),
                 _ => profiles.OrderBy(s => s.Id).ToList(),
             };
 
-            return profiles.AsQueryable();
+            return profiles;
         }
 
-        private static List<ProfileViewModel> ReadProfiles()
+        private static IEnumerable<ProfileViewModel> ReadProfiles()
         {
-            List<ProfileViewModel> profiles;
+            IEnumerable<ProfileViewModel> profiles;
             using (StreamReader r = new StreamReader("profiles.json"))
             {
                 string json = r.ReadToEnd();

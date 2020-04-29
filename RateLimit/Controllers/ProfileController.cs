@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RateLimit.Filters;
 using RateLimit.Services;
 using X.PagedList;
 
@@ -6,11 +7,11 @@ namespace RateLimit.Controllers
 {
     public class ProfileController: Controller
     {
-        public object Profiles(int? page, int? pageSize, string searchString)
+        public IActionResult Profiles(int page = 1, int pageSize = 3, string searchString = "")
         {
-            var profiles = ProfileService.GetProfiles("FirstName", 1, searchString);
+            var profiles = ProfileService.GetProfiles("FirstName", searchString);
 
-            IPagedList onePageOfProducts = profiles.ToPagedList(page ?? 1, pageSize ?? 2);
+            IPagedList onePageOfProducts = profiles.ToPagedList(page, pageSize);
             ViewBag.OnePageOfProducts = onePageOfProducts;
 
             return View();
