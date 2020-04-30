@@ -16,11 +16,26 @@
 
 <table class="table-bordered">
     <tr>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Birthday</th>
-        <th>Id</th>
+        <th>
+            <a asp-action="Profiles" asp-route-sortOrder="@ViewBag.FirstNameSort">
+                First Name
+            </a>
+        </th>
+        <th>
+            <a asp-action="Profiles" asp-route-sortOrder="@ViewBag.LastNameSort">
+                Last Name
+            </a>
+        </th>
+        <th>
+            <a asp-action="Profiles" asp-route-sortOrder="@ViewBag.BirthdaySort">
+                Birthday
+            </a>
+        </th>
+        <th>
+            Id
+        </th>
     </tr>
+
     @foreach (var profileInfo in Model)
     {
         <tr>

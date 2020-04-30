@@ -8,7 +8,7 @@ namespace RateLimit.Services
 {
     public class ProfileService
     {
-        public static IEnumerable<ProfileViewModel> GetProfiles(string sortField, string searchString)
+        public IEnumerable<ProfileViewModel> GetProfiles(string searchString)
         {
             var profiles = ReadProfiles();
 
@@ -17,18 +17,10 @@ namespace RateLimit.Services
                 profiles = profiles.Where(s => s.LastName.Contains(searchString) || s.FirstName.Contains(searchString));
             }
 
-            profiles = sortField switch
-            {
-                "Birthday" => profiles.OrderBy(s => s.Birthday),
-                "LastName" => profiles.OrderBy(s => s.LastName),
-                "FirstName" => profiles.OrderBy(s => s.FirstName),
-                _ => profiles.OrderBy(s => s.Id),
-            };
-
             return profiles;
         }
 
-        private static IEnumerable<ProfileViewModel> ReadProfiles()
+        private IEnumerable<ProfileViewModel> ReadProfiles()
         {
             IEnumerable<ProfileViewModel> profiles;
             using (StreamReader r = new StreamReader("profiles.json"))
