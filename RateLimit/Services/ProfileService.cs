@@ -14,8 +14,7 @@ namespace RateLimit.Services
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                profiles = profiles.Where(s => s.LastName.Contains(searchString)
-                                       || s.FirstName.Contains(searchString));
+                profiles = profiles.Where(s => s.LastName.Contains(searchString) || s.FirstName.Contains(searchString));
             }
 
             profiles = sortField switch
@@ -23,7 +22,7 @@ namespace RateLimit.Services
                 "Birthday" => profiles.OrderBy(s => s.Birthday),
                 "LastName" => profiles.OrderBy(s => s.LastName),
                 "FirstName" => profiles.OrderBy(s => s.FirstName),
-                _ => profiles.OrderBy(s => s.Id).ToList(),
+                _ => profiles.OrderBy(s => s.Id),
             };
 
             return profiles;
