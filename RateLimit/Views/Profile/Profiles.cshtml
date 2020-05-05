@@ -1,14 +1,17 @@
 ﻿@using X.PagedList.Mvc.Core.Common;
 @using X.PagedList.Mvc.Core;
 
-@model X.PagedList.IPagedList<ProfileViewModel>
+@model FormatProfileViewModel
 
 <link href="@Url.Content("css/site.css")" rel="stylesheet" type="text/css" />
 
 <form asp-controller="Profile" asp-action="Profiles">
     <p>
-        Title: <input type="text" name="SearchString">
-        <input type="submit" value="Filter" />
+        Search: <input type="text" name="searchString">
+
+        @Html.DropDownList("sortOrder", new SelectList(Enum.GetValues(typeof(SortState))), "Select sort field")
+
+        <input type="submit" value="Sort profiles" />
     </p>
 </form>
 
@@ -16,40 +19,31 @@
 
 <table class="table-bordered">
     <tr>
-        <th>
-            <a asp-action="Profiles" asp-route-sortOrder="@ViewBag.FirstNameSort">
-                First Name
-            </a>
-        </th>
-        <th>
-            <a asp-action="Profiles" asp-route-sortOrder="@ViewBag.LastNameSort">
-                Last Name
-            </a>
-        </th>
-        <th>
-            <a asp-action="Profiles" asp-route-sortOrder="@ViewBag.BirthdaySort">
-                Birthday
-            </a>
-        </th>
-        <th>
-            Id
-        </th>
+       <th>First name</th>
+       <th>First name</th>
+       <th>Birthday</th>
     </tr>
 
-    @foreach (var profileInfo in Model)
-    {
+    @foreach (var profileInfo in Model.Profiles)
+     {
         <tr>
-            <td>@profileInfo.FirstName</td>
-            <td>@profileInfo.LastName</td>
-            <td>@profileInfo.Birthday</td>
-            <td>@profileInfo.Id</td>
+           <td>@profileInfo.FirstName</td>
+           <td>@profileInfo.LastName</td>
+           <td>@profileInfo.Birthday</td>
         </tr>
-    }
+     }
 </table>
 
 @Html.PagedListPager(
-    Model,
-    page => Url.Action("Profiles", new { page }),
+    Model.Profiles,
+    page => Url.Action("Profiles",
+    new
+    {
+        page,
+        searchString = Model.ProfileFilter.SearchString,
+        sortOrder = Model.ProfileFilter.SortOrder,
+        pageCount = Model.ProfileFilter.PageCount
+    }),
     new PagedListRenderOptions
     {
         LiElementClasses = new[] { "page-item" },

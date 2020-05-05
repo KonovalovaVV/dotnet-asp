@@ -1,35 +1,61 @@
-﻿using RateLimit.Models;
+﻿using RateLimit.Filters;
+using RateLimit.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using X.PagedList;
 
 namespace RateLimit.Services
 {
     public class ProfileService
     {
-        public IEnumerable<ProfileViewModel> GetProfiles(string searchString)
+        private static IEnumerable<ProfileViewModel> profiles;
+
+        static ProfileService()
         {
-            var profiles = ReadProfiles();
-
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                profiles = profiles.Where(s => s.LastName.Contains(searchString) || s.FirstName.Contains(searchString));
-            }
-
-            return profiles;
+            ReadProfiles();
         }
 
-        private IEnumerable<ProfileViewModel> ReadProfiles()
+        public FormatProfileViewModel GetProfiles(ProfileFilter filter)
         {
-            IEnumerable<ProfileViewModel> profiles;
+            var profileViewModels = profiles;
+
+            if (!string.IsNullOrEmpty(filter.SearchString))
+            {
+                profileViewModels = profileViewModels
+                    .Where(s => s.LastName.Contains(filter.SearchString) || s.FirstName.Contains(filter.SearchString));
+            }
+
+            SortProfiles(ref profileViewModels, filter.SortOrder);
+
+            return new FormatProfileViewModel
+            {
+                Profiles = profileViewModels.ToPagedList(filter.PageNumber, filter.PageCount),
+                ProfileFilter = filter
+            };
+        }
+
+        private static void ReadProfiles()
+        {
             using (StreamReader r = new StreamReader("profiles.json"))
             {
                 string json = r.ReadToEnd();
                 profiles = JsonSerializer.Deserialize<List<ProfileViewModel>>(json);
             }
+        }
 
-            return profiles;
+        private static void SortProfiles(ref IEnumerable<ProfileViewModel> profileViewModels, SortState sortOrder)
+        {
+            profileViewModels = sortOrder switch
+            {
+                SortState.LastNameDesc => profileViewModels.OrderByDescending(s => s.LastName),
+                SortState.BirthdayAsc => profileViewModels.OrderBy(s => s.Birthday),
+                SortState.FirstNameDesc => profileViewModels.OrderByDescending(s => s.FirstName),
+                SortState.FirstNameAsc => profileViewModels.OrderBy(s => s.FirstName),
+                SortState.BirthdayDesc => profileViewModels.OrderByDescending(s => s.Birthday),
+                _ => profileViewModels.OrderBy(s => s.LastName),
+            };
         }
     }
 }
