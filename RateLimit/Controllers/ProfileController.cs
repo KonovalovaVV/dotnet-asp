@@ -25,7 +25,13 @@ namespace RateLimit.Controllers
                 PageCount = pageCount
             };
 
-            return View(profileService.GetProfiles(profileFilter));
+            var formatProfileViewModel = new FormatProfileViewModel
+            {
+                ProfileFilter = profileFilter,
+                Profiles = profileService.GetProfiles(profileFilter)
+            };
+
+            return View(formatProfileViewModel);
         }
     }
 }

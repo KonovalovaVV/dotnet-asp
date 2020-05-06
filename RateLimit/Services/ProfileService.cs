@@ -17,7 +17,7 @@ namespace RateLimit.Services
             ReadProfiles();
         }
 
-        public FormatProfileViewModel GetProfiles(ProfileFilter filter)
+        public IPagedList<ProfileViewModel> GetProfiles(ProfileFilter filter)
         {
             var profileViewModels = profiles;
 
@@ -29,11 +29,7 @@ namespace RateLimit.Services
 
             SortProfiles(ref profileViewModels, filter.SortOrder);
 
-            return new FormatProfileViewModel
-            {
-                Profiles = profileViewModels.ToPagedList(filter.PageNumber, filter.PageCount),
-                ProfileFilter = filter
-            };
+            return profileViewModels.ToPagedList(filter.PageNumber, filter.PageCount);
         }
 
         private static void ReadProfiles()
