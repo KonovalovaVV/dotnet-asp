@@ -1,0 +1,51 @@
+﻿@using X.PagedList.Mvc.Core.Common;
+@using X.PagedList.Mvc.Core;
+
+@model FormatProfileViewModel
+
+<link href="@Url.Content("css/site.css")" rel="stylesheet" type="text/css" />
+
+<form asp-controller="Profile" asp-action="Profiles">
+    <p>
+        Search: <input type="text" name="searchString">
+
+        @Html.DropDownList("sortOrder", new SelectList(Enum.GetValues(typeof(SortState))), "Select sort field")
+
+        <input type="submit" value="Sort profiles" />
+    </p>
+</form>
+
+<h2>Profiles</h2>
+
+<table class="table-bordered">
+    <tr>
+       <th>First name</th>
+       <th>Second name</th>
+       <th>Birthday</th>
+    </tr>
+
+    @foreach (var profileInfo in Model.Profiles)
+     {
+        <tr>
+           <td>@profileInfo.FirstName</td>
+           <td>@profileInfo.LastName</td>
+           <td>@profileInfo.Birthday</td>
+        </tr>
+     }
+</table>
+
+@Html.PagedListPager(
+    Model.Profiles,
+    page => Url.Action("Profiles",
+    new
+    {
+        page,
+        searchString = Model.ProfileFilter.SearchString,
+        sortOrder = Model.ProfileFilter.SortOrder,
+        pageCount = Model.ProfileFilter.PageCount
+    }),
+    new PagedListRenderOptions
+    {
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" }
+    })
